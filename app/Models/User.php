@@ -45,6 +45,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_approved'       => 'boolean', // ✅ Cast is_approved to boolean
         ];
     }
     
@@ -67,5 +68,10 @@ public function isApprovedVendor()
 {
     return $this->role === 'vendor' && $this->is_approved;
 }
+public function products()
+{
+    return $this->hasMany(Product::class, 'vendor_id');
+}
+
 
 }
