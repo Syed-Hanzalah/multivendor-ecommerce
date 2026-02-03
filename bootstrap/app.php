@@ -4,6 +4,7 @@ use App\Http\Middleware\VendorMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\VendorApprovedMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
         'admin' => AdminMiddleware::class,
         'vendor' => VendorMiddleware::class,
+        'vendor.approved' => VendorApprovedMiddleware::class,
     ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

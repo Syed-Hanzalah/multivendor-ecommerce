@@ -87,5 +87,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
 });
+Route::middleware(['auth','vendor.approved'])->prefix('vendor')->group(function () {
+
+    Route::get('/orders', [\App\Http\Controllers\Vendor\OrderController::class, 'index'])
+        ->name('vendor.orders');
+
+    Route::post('/orders/{order}/status', [\App\Http\Controllers\Vendor\OrderController::class, 'updateStatus'])
+        ->name('vendor.orders.status');
+});
+
 
 require __DIR__ . '/auth.php';

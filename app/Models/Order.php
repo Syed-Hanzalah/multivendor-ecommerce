@@ -13,4 +13,19 @@ class Order extends Model
         'commission',
         'status',
     ];
+    public function vendor()
+{
+    return $this->belongsTo(User::class, 'vendor_id');
+}
+
+public function items()
+{
+    return $this->hasMany(OrderItem::class);
+}
+
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
 }
