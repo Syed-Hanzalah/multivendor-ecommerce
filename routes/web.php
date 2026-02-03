@@ -6,6 +6,10 @@ use App\Http\Controllers\VendorRegisterController;
 use App\Http\Controllers\AdminVendorController;
 use App\Http\Controllers\VendorDashboardController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Vendor\ProductController;
+use App\Http\Controllers\Customer\ProductController as CustomerProductController;
+use App\Http\Controllers\Customer\CartController;
+use App\Http\Controllers\Customer\CheckoutController;
 
 Route::middleware(['auth', 'vendor'])->group(function () {
     Route::get('/vendor/dashboard', [VendorDashboardController::class, 'index'])
@@ -38,7 +42,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/vendors/{user}/approve', [AdminVendorController::class, 'approve'])->name('admin.vendors.approve');
 });
 
-use App\Http\Controllers\Vendor\ProductController;
+
 
 Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -64,5 +68,24 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
+
+Route::get('/products', [CustomerProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [CustomerProductController::class, 'show'])->name('products.show');
+
+
+Route::middleware('auth')->group(function () {
+    Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
+});
+
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+
+});
 
 require __DIR__ . '/auth.php';
